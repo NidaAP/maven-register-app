@@ -1,0 +1,22 @@
+name: Static Analysis using Sonar Cloud
+on: 
+  push: 
+    branches: [main]
+jobs: 
+  sonarcloud: 
+    runs-on: ubuntu-latest
+    steps: 
+      - name: checkout code
+        uses: actions/checkout@v4.2.2
+      - name: setup java 
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '21'
+      - name: SonarCloud Scan
+        run: |
+          mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+          -Dsonar.token=${{ secrets.SONAR_TOKEN }}  \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.organization=nidaap \
+          -Dsonar.projectKey=NidaAP_maven-register-app
