@@ -28,6 +28,11 @@ jobs:
   staticanalysis:
     needs: compile
     uses: NidaAP/maven-register-app/.github/workflows/sonarcloud-analysis.yml@main
+    with: 
+      projectKey: "NidaAP_maven-register-app"
+      organization: "nidaap" 
+    secrets: 
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   unittesting:
     runs-on: ubuntu-latest
     needs: staticanalysis
