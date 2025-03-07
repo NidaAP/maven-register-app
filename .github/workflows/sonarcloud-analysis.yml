@@ -22,6 +22,10 @@ jobs:
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '21'
+      - name: display the parameter
+        run: |
+          echo " organization value is : ${{ inputs.organization }}"
+          echo " project Key  value is : ${{ inputs.projectKey }}"
       - name: SonarCloud Scan
         run: |
           mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
