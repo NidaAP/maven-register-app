@@ -1,6 +1,16 @@
 name: Static Analysis using Sonar Cloud
 on: 
   workflow_call:
+    secrets: 
+      SONAR_TOKEN:
+        required: true
+    inputs: 
+      projectKey:
+        required: true
+        type: string
+      organization:
+        required: true
+        type: string
 jobs: 
   sonarcloud: 
     runs-on: ubuntu-latest
@@ -17,5 +27,5 @@ jobs:
           mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
           -Dsonar.token=${{ secrets.SONAR_TOKEN }}  \
           -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.organization=nidaap \
-          -Dsonar.projectKey=NidaAP_maven-register-app
+          -Dsonar.organization= ${{ inputs.projectKey }} \
+          -Dsonar.projectKey=${{ inputs.organization }}
