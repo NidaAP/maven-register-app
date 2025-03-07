@@ -1,7 +1,6 @@
 name: Static Analysis using Sonar Cloud
 on: 
-  push: 
-    branches: [main]
+  workflow_call:
 jobs: 
   sonarcloud: 
     runs-on: ubuntu-latest
