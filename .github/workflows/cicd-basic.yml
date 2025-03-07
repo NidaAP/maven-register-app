@@ -30,7 +30,7 @@ jobs:
     uses: NidaAP/maven-register-app/.github/workflows/sonarcloud-analysis.yml@main
     with: 
       projectKey: "NidaAP_maven-register-app"
-      organization: "nidaap" 
+      organization: "nidaap"
     secrets: 
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   unittesting:
