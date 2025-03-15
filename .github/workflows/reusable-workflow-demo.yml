@@ -1,7 +1,5 @@
 name: 28-02-2025 reusable workflows demo
-on: 
-  push:
-    branches: [main]
+on: [workflow_dispatch]
 jobs: 
   job-from-current-workflow:
     runs-on: ubuntu-latest
