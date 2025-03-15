@@ -12,14 +12,10 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
       - name: maven build
-        run: mvn package
+        run: mvn clean compile package
       - name: command execution for checking the path
         run: |
           pwd
-          ls
-          cd webapp
-          ls
-          cd target
           ls
           cp webapp/target/webapp.war webapp.war
           ls -l -a
