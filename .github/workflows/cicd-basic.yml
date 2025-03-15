@@ -1,6 +1,5 @@
 name: Basics CICD pipeline - GitHub Hosted Runner
-on: 
-  push
+on: [workflow_dispatch]
 jobs: 
   clean: 
     runs-on: ubuntu-latest
