@@ -1,6 +1,5 @@
 name: 25-02-25 - self hosted runner example
-on:
-  push
+on: [workflow_dispatch]
 jobs: 
   self-hosted-job:
     runs-on: self-hosted
