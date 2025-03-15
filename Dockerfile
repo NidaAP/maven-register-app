@@ -1,4 +1,3 @@
-FROM tomcat:latest
-RUN cp -R  /usr/local/tomcat/webapps.dist/*  /usr/local/tomcat/webapps
-COPY ./webapp/target/webapp.war /usr/local/tomcat/webapps
+FROM tomcat:9.0-jdk17
 
+COPY webapp/target/calculator.war /usr/local/tomcat/webapps/
