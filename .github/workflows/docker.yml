@@ -43,4 +43,5 @@ jobs:
         with:
           push: true
           tags: nidayra/githubactions-app:latest
+          context: .
         
