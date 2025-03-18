@@ -108,4 +108,5 @@ jobs:
           tags: | 
             nidayra/githubactions-docker-image:latest
             nidayra/githubactions-docker-image:${{ github.run_number }}
+          context: .
     
