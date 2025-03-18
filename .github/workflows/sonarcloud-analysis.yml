@@ -11,6 +11,7 @@ on:
       organization:
         required: true
         type: string
+        default: "nidaap"
 jobs: 
   sonarcloud: 
     runs-on: ubuntu-latest
