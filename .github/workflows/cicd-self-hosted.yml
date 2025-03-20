@@ -1,0 +1,96 @@
+name: Basics CICD pipeline - self Hosted Runner
+on: [workflow_dispatch]
+jobs: 
+  clean: 
+    runs-on: self-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+      - name: clean job
+        run: mvn clean  
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: clean-artifact
+          path: .
+  compile:
+    runs-on: self-latest
+    needs: clean
+    steps:
+      - name: download artifact from previous job
+        uses: actions/download-artifact@v4
+        with:
+          name: clean-artifact
+      - name: compile job
+        run: mvn compile
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: compile-artifact
+          path: .
+  staticanalysis:
+    needs: compile
+    uses: NidaAP/maven-register-app/.github/workflows/sonarcloud-analysis.yml@main
+    with: 
+      projectKey: "NidaAP_maven-register-app"
+      organization: "nidaap"
+    secrets: 
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  unittesting:
+    runs-on: self-latest
+    needs: staticanalysis
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+      - name: unit testing job
+        run: mvn test
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: unittesting-artifact
+          path: .
+  build:
+    runs-on: self-latest
+    needs: unittesting
+    steps:
+      - name: download artifact from previous job
+        uses: actions/download-artifact@v4
+        with:
+          name: unittesting-artifact
+      - name: Build package job
+        run: mvn package
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: .
+  docker-image:
+    runs-on: self-latest
+    needs: build
+    steps:
+      - name: download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifact
+    
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: | 
+            nidayra/githubactions-docker-image:latest
+            nidayra/githubactions-docker-image:${{ github.run_number }}
+          context: .
+    
