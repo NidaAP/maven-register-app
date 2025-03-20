@@ -6,6 +6,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build with Maven
+      shell: cmd
       run: mvn -B package --file pom.xml
 
 
