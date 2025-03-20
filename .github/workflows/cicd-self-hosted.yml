@@ -2,7 +2,7 @@ name: Basics CICD pipeline - self Hosted Runner
 on: [workflow_dispatch]
 jobs: 
   clean: 
-    runs-on: self-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.2
@@ -14,7 +14,7 @@ jobs:
           name: clean-artifact
           path: .
   compile:
-    runs-on: self-latest
+    runs-on: self-hosted
     needs: clean
     steps:
       - name: download artifact from previous job
@@ -37,7 +37,7 @@ jobs:
     secrets: 
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   unittesting:
-    runs-on: self-latest
+    runs-on: self-hosted
     needs: staticanalysis
     steps:
       - name: Checkout
@@ -50,7 +50,7 @@ jobs:
           name: unittesting-artifact
           path: .
   build:
-    runs-on: self-latest
+    runs-on: self-hosted
     needs: unittesting
     steps:
       - name: download artifact from previous job
@@ -65,7 +65,7 @@ jobs:
           name: build-artifact
           path: .
   docker-image:
-    runs-on: self-latest
+    runs-on: self-hosted
     needs: build
     steps:
       - name: download artifact from build job
