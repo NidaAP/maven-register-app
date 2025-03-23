@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: registerapp
-        image: nidayra/githubactions-app:5
+        image: nidayra/githubactions-app:6
         ports:
         - containerPort: 80
