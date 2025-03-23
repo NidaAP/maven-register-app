@@ -30,4 +30,21 @@ jobs:
             nidayra/githubactions-app:latest
             nidayra/githubactions-app:${{ github.run_number }}
           context: .
-        
+  k8s:
+    needs: docker_build
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4.2.2
+      - name: modify the deployment manifest with the current image
+        run: |
+          git config user.email smilykodi@gmail.com
+          git config user.name NidaAP
+          cd k8s
+          cat deployment.yml
+          sed -i "s+nidayra/githubactions-app.*+nidayra/githubactions-app:$RUN_NUMBER+g" deployment.yml
+          cat deployment.yml
+          git add .
+          git commit -m 'Done  by Github Actions   Job changemanifest: ${{ github.run_number }}'
+          git push origin main
+    
